@@ -4,7 +4,7 @@ const makeObj = (cid) => {
   return obj;
 }
 
-const regi = (sum, cidObj) => {
+const makeRegi = (sum, cidObj) => {
   const obj = {
     sum: sum,
     status: '',
@@ -24,70 +24,53 @@ const regi = (sum, cidObj) => {
   return obj;
 }
 
-const makeChange = (sum, obj) => {
-  const regiObj = regi(sum, obj);
-
-  let h = 0;
+const makeChange = (regiObj) => {
   while(regiObj.sum >= 100 && regiObj.cidObj["ONE HUNDRED"] >= 100) {
     regiObj.sum -= 100;
     regiObj.cidObj["ONE HUNDRED"] -= 100;
-    h += 100;
     regiObj.diff["ONE HUNDRED"] += 100;
   }
 
-  let tw = 0;
   while(regiObj.sum >= 20 && regiObj.cidObj.TWENTY) {
     regiObj.sum -= 20;
     regiObj.cidObj.TWENTY -= 20;
-    tw += 20;
-    regiObj.diff["TWENTY"] = tw;
+    regiObj.diff["TWENTY"] += 20;
   }
 
-  let ten = 0;
   while(regiObj.sum >= 10 && regiObj.cidObj.TEN >= 10){
     regiObj.sum -= 10;
     regiObj.cidObj.TEN -= 10;
-    ten += 10;
-    regiObj.diff["TEN"] = ten;
+    regiObj.diff["TEN"] += 10;
   }
 
-  let f = 0;
   while(regiObj.sum >= 5 && regiObj.cidObj.FIVE >= 5) {
     regiObj.sum -= 5;
     regiObj.cidObj.FIVE -= 5;
-    f += 5;
-    regiObj.diff["FIVE"] = f;
+    regiObj.diff["FIVE"] += 5;
   }
 
-  let o = 0;
   while(regiObj.sum >= 1 && regiObj.cidObj.ONE >= 1) {
     regiObj.sum -= 1;
     regiObj.cidObj.ONE -= 1;
-    o += 1;
-    regiObj.diff["ONE"] = o;
-
+    regiObj.diff["ONE"] += 1;
   }
-  let q = 0;
+
   while(regiObj.sum >= 0.25 && regiObj.cidObj.QUARTER >= 0.25){
     regiObj.sum -= .25;
     regiObj.cidObj.QUARTER -= .25;
-    q += .25;
-    regiObj.diff["QUARTER"] = q;
+    regiObj.diff["QUARTER"] += .25;
   }
-  let d = 0;
+
   while(regiObj.sum >= .1 && regiObj.cidObj.DIME >= .1){
     regiObj.sum -= .1;
     regiObj.cidObj.DIME -= .1;
-    d += .1;
-    regiObj.diff["DIME"] =d;
+    regiObj.diff["DIME"] += .1;
   }
 
-  let n = 0;
   while(regiObj.sum >= .05 && regiObj.cidObj.NICKEL >= .05){
     regiObj.sum -= .05;
     regiObj.cidObj.NICKEL -.05;
-    n += .05
-    regiObj.diff["NICKEL"] = n;
+    regiObj.diff["NICKEL"] += .05;
   }
 
   let p = 0;
@@ -100,7 +83,7 @@ const makeChange = (sum, obj) => {
   }
 
   let remain = 0;
-  Object.values(obj).forEach(val => remain += val);
+  Object.values(regiObj.cidObj).forEach(val => remain += val);
 
   let newObj = {};
   if(regiObj.sum > 0.00){
@@ -112,20 +95,9 @@ const makeChange = (sum, obj) => {
         newObj[key] = regiObj.diff[key]
       }
     })
-    // console.log(newObj);
   } else if(regiObj.sum > -1 && remain > -1){
     regiObj.status = "CLOSED";
     newObj = regiObj.diff;
-    // regiObj.diff = {};
-    // regiObj.diff["PENNY"] = Math.floor(p*100)/100;
-    // regiObj.diff["NICKEL"] = n;
-    // regiObj.diff["DIME"] = d;
-    // regiObj.diff["QUARTER"] = q;
-    // regiObj.diff["ONE"] = o;
-    // regiObj.diff["FIVE"] = f;
-    // regiObj.diff["TEN"] = ten;
-    // regiObj.diff["TWENTY"] = tw;
-    // regiObj.diff["ONE HUNDRED"] = h;
     }
   let change = [];
   if (regiObj.status === "OPEN" || regiObj.status === "INSUFFICIENT FUNDS") {
@@ -144,11 +116,9 @@ const makeChange = (sum, obj) => {
 }
 
 const checkCashRegister = (price, cash, cid) => {
-  let cidObj = makeObj(cid);
+  const register = makeRegi((cash - price), makeObj(cid));
 
-  let sum = cash - price;
-
-  return makeChange(sum, cidObj);
+  return makeChange(register);
 }
 
 console.log(checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]));
