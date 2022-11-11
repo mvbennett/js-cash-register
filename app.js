@@ -31,8 +31,8 @@ const updateRegister = (regiObj, number, name) => {
   return regiObj;
 }
 
-const makeChange = (regiObj) => {
-  const valueRef = {
+const calculate = (regiObj) => {
+    const valueRef = {
       "ONE HUNDRED": 100,
       "TWENTY": 20,
       "TEN": 10,
@@ -54,7 +54,10 @@ const makeChange = (regiObj) => {
     regiObj = updateRegister(regiObj, .01, "PENNY");
     regiObj.diff.PENNY = Math.round(regiObj.diff.PENNY*100)/100;
   }
+  return regiObj;
+}
 
+const makeChange = (regiObj) => {
   let remain = 0;
   Object.values(regiObj.cidObj).forEach(val => remain += val);
 
@@ -91,7 +94,7 @@ const makeChange = (regiObj) => {
 const checkCashRegister = (price, cash, cid) => {
   const register = makeRegi((cash - price), makeObj(cid));
 
-  return makeChange(register);
+  return makeChange(calculate(register));
 }
 
 console.log(checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]));
