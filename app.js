@@ -73,29 +73,30 @@ const makeChange = (regiObj) => {
   let remain = 0;
   Object.values(regiObj.cidObj).forEach(val => remain += val);
 
-  let newObj = {};
+  let changeObj = {};
   if(regiObj.sum > 0.00){
     regiObj.status = "INSUFFICIENT_FUNDS"
   } else if(regiObj.sum > -1 && remain > 0){
     regiObj.status = "OPEN";
     Object.keys(regiObj.diff).map((key) => {
       if (regiObj.diff[key] > 0) {
-        newObj[key] = regiObj.diff[key]
+        changeObj[key] = regiObj.diff[key]
       }
     })
   } else if(regiObj.sum > -1 && remain > -1){
     regiObj.status = "CLOSED";
-    newObj = regiObj.diff;
+    changeObj = regiObj.diff;
     }
   let change = [];
-  if (regiObj.status === "OPEN" || regiObj.status === "INSUFFICIENT FUNDS") {
-    for(let j = 0; j < Object.keys(newObj).length; j++){
-      change.push([Object.keys(newObj)[j], Object.values(newObj)[j]]);
-    }
+  if (regiObj.status === "OPEN") {
+    Object.keys(changeObj).forEach((key) => {
+      change.push([key, changeObj[key]])
+    })
   } else if (regiObj.status === "CLOSED") {
-      for(let j = 0; j < Object.keys(newObj).length; j++){
-        change.unshift([Object.keys(newObj)[j], Object.values(newObj)[j]]);
-  }}
+      Object.keys(changeObj).forEach((key) => {
+        change.unshift([key, changeObj[key]])
+    })
+    }
   let result = {
     "status": regiObj.status,
     "change": change
