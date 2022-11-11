@@ -66,11 +66,8 @@ const makeChange = (regiObj) => {
 
   let p = 0;
   while(regiObj.sum >= .001 && regiObj.cidObj.PENNY >= .001){
-    regiObj.sum = Math.round(regiObj.sum * 100)/100;
-    regiObj.sum -= .01;
-    regiObj.cidObj.PENNY -= .01;
-    p += .01;
-    regiObj.diff["PENNY"] = Math.round(p*100)/100;
+    regiObj = updateRegister(regiObj, .01, "PENNY");
+    regiObj.diff.PENNY = Math.round(regiObj.diff.PENNY*100)/100;
   }
 
   let remain = 0;
