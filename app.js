@@ -32,39 +32,24 @@ const updateRegister = (regiObj, number, name) => {
 }
 
 const makeChange = (regiObj) => {
-  while(regiObj.sum >= 100 && regiObj.cidObj["ONE HUNDRED"] >= 100) {
-    regiObj = updateRegister(regiObj, 100, "ONE HUNDRED");
+  const valueRef = {
+      "ONE HUNDRED": 100,
+      "TWENTY": 20,
+      "TEN": 10,
+      "FIVE": 5,
+      "ONE": 1,
+      "QUARTER": 0.25,
+      "DIME": 0.1,
+      "NICKEL": 0.5,
+      // "PENNY": 0.01
   }
 
-  while(regiObj.sum >= 20 && regiObj.cidObj.TWENTY) {
-     regiObj = updateRegister(regiObj, 20, "TWENTY");
-  }
+  Object.keys(valueRef).map((key) => {
+    while (regiObj.sum >= valueRef[key] && regiObj.cidObj[key] >= valueRef[key]) {
+      regiObj = updateRegister(regiObj, valueRef[key], key);
+    }
+  })
 
-  while(regiObj.sum >= 10 && regiObj.cidObj.TEN >= 10){
-    regiObj = updateRegister(regiObj, 10, "TEN");
-  }
-
-  while(regiObj.sum >= 5 && regiObj.cidObj.FIVE >= 5) {
-    regiObj = updateRegister(regiObj, 5, "FIVE");
-  }
-
-  while(regiObj.sum >= 1 && regiObj.cidObj.ONE >= 1) {
-    regiObj = updateRegister(regiObj, 1, "ONE");
-  }
-
-  while(regiObj.sum >= 0.25 && regiObj.cidObj.QUARTER >= 0.25){
-    regiObj = updateRegister(regiObj, .5, "QUARTER");
-  }
-
-  while(regiObj.sum >= .1 && regiObj.cidObj.DIME >= .1){
-    regiObj = updateRegister(regiObj, .1, "DIME");
-  }
-
-  while(regiObj.sum >= .05 && regiObj.cidObj.NICKEL >= .05){
-    regiObj = updateRegister(regiObj, .05, "NICKEL");
-  }
-
-  let p = 0;
   while(regiObj.sum >= .001 && regiObj.cidObj.PENNY >= .001){
     regiObj = updateRegister(regiObj, .01, "PENNY");
     regiObj.diff.PENNY = Math.round(regiObj.diff.PENNY*100)/100;
