@@ -1,11 +1,11 @@
+const makeObj = (cid) => {
+  const obj = {};
+  cid.map(denom => obj[denom[0]] = denom[1])
+  return obj;
+}
+
 const checkCashRegister = (price, cash, cid) => {
-  let cidObj = {};
-  const makeObj = (cid) => {
-    for(let i = 0; i < cid.length; i++) {
-      cidObj[cid[i][0]] = cid[i][1];
-    }
-  }
-  makeObj(cid);
+  let cidObj = makeObj(cid);
 
   let sum = cash - price;
   function makeChange(sum, obj){
